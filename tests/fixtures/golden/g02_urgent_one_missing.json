@@ -1,0 +1,23 @@
+{
+  "id": "g02",
+  "title": "Urgent escalation with 3 facts — middle fact omitted",
+  "scenario": {
+    "intent": "Escalate a production outage",
+    "key_facts": [
+      "Checkout error rate spiked to 42% at 09:10 UTC",
+      "Incident is being coordinated in channel #inc-payments-042",
+      "Need an on-call SRE paged within 15 minutes"
+    ],
+    "tone": "urgent"
+  },
+  "email": {
+    "subject": "URGENT: checkout outage — on-call SRE needed within 15 min",
+    "body": "Team,\n\nCheckout error rate spiked to 42% at 09:10 UTC and is holding. Please page an on-call SRE into the channel within the next 15 minutes so we can begin rollback.\n\nThank you,\nAlex"
+  },
+  "expected": {
+    "fact_inclusion_min": 0.66,
+    "fact_inclusion_max": 0.67,
+    "missing_indices": [1],
+    "structural_professional_quality_min": 0.8
+  }
+}

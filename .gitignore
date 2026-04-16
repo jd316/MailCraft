@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+dist/
+build/
+
+# Env / secrets
+.env
+.env.local
+*.secret
+
+# Data & artifacts
+data/
+*.db
+*.sqlite
+*.sqlite3
+
+# Reports (keep committed reports under eval/reports/committed/)
+eval/reports/*.csv
+eval/reports/*.json
+!eval/reports/committed/**
+
+# OS / editors
+.DS_Store
+.idea/
+.vscode/
+*.swp

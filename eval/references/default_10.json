@@ -1,0 +1,56 @@
+{
+  "set_id": "default_10",
+  "description": "Human reference emails authored by the candidate — the 'ideal' outputs used for qualitative comparison and reader-friendly reporting. They are not used by the automatic scorers beyond optional inspection.",
+  "references": [
+    {
+      "scenario_id": "S01",
+      "reference_subject": "Follow-up and next steps from today's review",
+      "reference_email": "Dear Priya,\n\nThank you for your time in today's review. To recap where we landed and confirm next steps:\n\n- Pilot rollout remains on track for the week of May 12.\n- I will share a revised pricing sheet by end of day Friday.\n- I will send the case studies we discussed on Thursday.\n\nTo keep the timeline, could you confirm production data access by Monday? Please let me know if anything above needs adjustment.\n\nBest regards,\nAlex"
+    },
+    {
+      "scenario_id": "S02",
+      "reference_subject": "Request for detailed proposal — platform migration",
+      "reference_email": "Dear Vendor Team,\n\nFollowing our earlier conversation, we would like to request a detailed proposal covering migration of 12 services to the new platform.\n\nPlease include scope, timeline, and pricing, with a target go-live of September 30. Our budget ceiling for this engagement is 180,000 USD. The proposal is due by April 30 so we can bring it to our April 5 steering committee.\n\nI am happy to schedule a discovery session if it would help shape the response.\n\nBest regards,\nAlex"
+    },
+    {
+      "scenario_id": "S03",
+      "reference_subject": "Can we reschedule Thursday's meeting?",
+      "reference_email": "Hi Sam,\n\nSomething came up on my side — any chance we could move our Thursday 10:00 UTC meeting? I can do Friday 14:00 UTC or Monday 09:00 UTC, whichever works better for you. Happy to keep the same 45-minute slot.\n\nApologies for the shuffle, and thanks for your flexibility.\n\nThanks,\nAlex"
+    },
+    {
+      "scenario_id": "S04",
+      "reference_subject": "Quarterly report — updated delivery date",
+      "reference_email": "Dear Jordan,\n\nI owe you an honest update. We had committed to sharing the quarterly report on April 12, but we will not make that date. The new delivery date is April 18.\n\nThe delay is due to a data pipeline recompute after a recent schema change; we are prioritizing correctness over speed here so that the numbers you see are ones you can rely on.\n\nI am sorry for the inconvenience this causes on your side. To make this right, I would like to offer a 30-minute walkthrough of the report when it is ready — I will hold time on your calendar for April 19.\n\nWith sincere apologies,\nAlex"
+    },
+    {
+      "scenario_id": "S05",
+      "reference_subject": "URGENT: checkout outage — need on-call SRE within 15 minutes",
+      "reference_email": "Team,\n\nWe need immediate help. Checkout error rate spiked to 42% at 09:10 UTC and is holding. Coordination is happening in #inc-payments-042. The last successful deploy was at 08:40 UTC, which is the most likely suspect.\n\nPlease page an on-call SRE into the channel within the next 15 minutes so we can begin rollback and root-cause work.\n\nThank you,\nAlex"
+    },
+    {
+      "scenario_id": "S06",
+      "reference_subject": "Following up on March's service issues — our plan forward",
+      "reference_email": "Dear Maria,\n\nThank you for the time on the call yesterday, and I appreciate how candid you were. Missing three SLAs in March is not the experience you signed up for, and I am sorry that is where we have landed.\n\nHere is what we are doing. First, we are assigning a dedicated customer success manager to your account so there is one accountable owner on our side. Second, a formal root-cause analysis will be delivered within the next 7 days, covering what failed, why, and the changes already in flight. Finally, I would like to hold our next review on April 22 at 15:00 UTC, where we can walk through the RCA and confirm the improvement plan.\n\nPlease call me directly if anything urgent comes up in the meantime.\n\nWith sincere regards,\nAlex"
+    },
+    {
+      "scenario_id": "S07",
+      "reference_subject": "Weekly status — onboarding service v2",
+      "reference_email": "Hello stakeholders,\n\nA short update on the onboarding service v2 workstream.\n\nWe reached feature complete this week. End-to-end tests are passing at 98%, with the remaining failures tracked and triaged. Load testing is scheduled for next Tuesday, and we expect that to be the last major gate before staging.\n\nOne blocker: the security review is held up pending provider approval. I will keep chasing that and flag if the timeline slips.\n\nRegards,\nAlex"
+    },
+    {
+      "scenario_id": "S08",
+      "reference_subject": "Thank you — follow-up from today's conversation",
+      "reference_email": "Hi team,\n\nThank you for the time today. I really enjoyed the conversation with the platform team on April 14, especially the deep dive into evaluation systems and prompt engineering — that is exactly the kind of problem I am hoping to work on.\n\nI am looking forward to the case-study next step, and I am happy to make space for a follow-up any time this week.\n\nThanks again,\nAlex"
+    },
+    {
+      "scenario_id": "S09",
+      "reference_subject": "Approval needed: CR-2187 before April 19 deploy window",
+      "reference_email": "Hi Priya,\n\nCR-2187 is ready for your final sign-off. CI run #4412 is fully green, and two peers have already approved the change.\n\nOur deployment window closes on April 19 at 20:00 UTC, so I would appreciate your review before then so we do not have to re-plan. Happy to walk through the diff live if that is faster.\n\nRegards,\nAlex"
+    },
+    {
+      "scenario_id": "S10",
+      "reference_subject": "Clarification needed: R-7 and R-9 before April 22 build start",
+      "reference_email": "Hello Priya,\n\nAhead of the April 22 implementation start, I need a quick clarification on two requirements.\n\nR-7 calls for 'fast export' but does not include a latency target — could you confirm the target we should build against? R-9 references 'supported regions' without an attached list — could you share the region list we should implement?\n\nA 20-minute sync before Friday 17:00 UTC would unblock us cleanly; otherwise happy to take answers asynchronously.\n\nRegards,\nAlex"
+    }
+  ]
+}

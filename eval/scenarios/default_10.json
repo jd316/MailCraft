@@ -1,0 +1,135 @@
+{
+  "set_id": "default_10",
+  "description": "Ten unique email scenarios covering the PRD §7 primary use cases across a mix of tones and difficulty levels.",
+  "scenarios": [
+    {
+      "scenario_id": "S01",
+      "title": "Follow-up after client review meeting",
+      "intent": "Follow up after a client review meeting and confirm commitments",
+      "key_facts": [
+        "Pilot rollout is scheduled for the week of May 12",
+        "A revised pricing sheet will be sent by Friday",
+        "Case studies will be shared on Thursday",
+        "We need confirmation on production data access by Monday"
+      ],
+      "tone": "formal",
+      "difficulty": "medium"
+    },
+    {
+      "scenario_id": "S02",
+      "title": "Request for detailed proposal",
+      "intent": "Request a detailed proposal including scope, timeline, and pricing",
+      "key_facts": [
+        "Proposal must cover migration of 12 services to the new platform",
+        "Target go-live is September 30",
+        "Budget ceiling is 180,000 USD",
+        "Proposal is due by April 30"
+      ],
+      "tone": "formal",
+      "difficulty": "medium"
+    },
+    {
+      "scenario_id": "S03",
+      "title": "Reschedule a meeting",
+      "intent": "Ask to reschedule a previously confirmed meeting",
+      "key_facts": [
+        "Original meeting was set for Thursday 10:00 UTC",
+        "Proposing Friday 14:00 UTC or Monday 09:00 UTC as alternatives",
+        "Need to preserve the same 45-minute duration"
+      ],
+      "tone": "casual",
+      "difficulty": "easy"
+    },
+    {
+      "scenario_id": "S04",
+      "title": "Delay notification and apology",
+      "intent": "Notify the customer that a promised deliverable will be late and apologize",
+      "key_facts": [
+        "Quarterly report was promised for April 12",
+        "New delivery date is April 18",
+        "Delay is due to a data pipeline recompute after a schema change",
+        "Offering a 30-minute walkthrough to compensate for the delay"
+      ],
+      "tone": "apologetic",
+      "difficulty": "hard"
+    },
+    {
+      "scenario_id": "S05",
+      "title": "Escalate a production outage",
+      "intent": "Escalate an ongoing production outage and request an on-call engineer",
+      "key_facts": [
+        "Checkout error rate spiked to 42% at 09:10 UTC",
+        "Incident is being coordinated in channel #inc-payments-042",
+        "Need an on-call SRE paged within 15 minutes",
+        "Last successful deploy was at 08:40 UTC"
+      ],
+      "tone": "urgent",
+      "difficulty": "hard"
+    },
+    {
+      "scenario_id": "S06",
+      "title": "Empathetic response to a dissatisfied client",
+      "intent": "Respond to a dissatisfied client with empathy and a concrete remediation plan",
+      "key_facts": [
+        "Client reported three missed SLAs in March",
+        "We are assigning a dedicated customer success manager",
+        "A formal root-cause analysis will be delivered within 7 days",
+        "Next review is scheduled for April 22 at 15:00 UTC"
+      ],
+      "tone": "empathetic",
+      "difficulty": "hard"
+    },
+    {
+      "scenario_id": "S07",
+      "title": "Internal status update for stakeholders",
+      "intent": "Provide a weekly internal status update to engineering stakeholders",
+      "key_facts": [
+        "Onboarding service v2 reached feature complete",
+        "End-to-end tests are passing at 98%",
+        "Load testing is planned for next Tuesday",
+        "Security review is blocked on provider approval"
+      ],
+      "tone": "neutral",
+      "difficulty": "medium"
+    },
+    {
+      "scenario_id": "S08",
+      "title": "Thank-you email after a job interview",
+      "intent": "Thank the interview panel and reiterate interest in the role",
+      "key_facts": [
+        "Interview was on April 14 with the platform team",
+        "Discussion focused on evaluation systems and prompt engineering",
+        "I am looking forward to the case-study next step",
+        "Available for a follow-up anytime this week"
+      ],
+      "tone": "friendly",
+      "difficulty": "easy"
+    },
+    {
+      "scenario_id": "S09",
+      "title": "Request approval on a PR/CR",
+      "intent": "Ask a reviewer for final approval on a change request",
+      "key_facts": [
+        "Change request is CR-2187 in the release tracker",
+        "All required tests are green in CI run #4412",
+        "Deployment window closes on April 19 at 20:00 UTC",
+        "Two peers have already approved"
+      ],
+      "tone": "assertive",
+      "difficulty": "medium"
+    },
+    {
+      "scenario_id": "S10",
+      "title": "Clarification request on ambiguous requirements",
+      "intent": "Ask the product owner to clarify two ambiguous requirements before implementation begins",
+      "key_facts": [
+        "Requirement R-7 specifies 'fast export' without a latency target",
+        "Requirement R-9 references 'supported regions' but no list is attached",
+        "Implementation is scheduled to start on April 22",
+        "A 20-minute sync is requested before Friday 17:00 UTC"
+      ],
+      "tone": "neutral",
+      "difficulty": "medium"
+    }
+  ]
+}

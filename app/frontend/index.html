@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>MailCraft</title>
+    <meta name="description" content="MailCraft — Turn intent into inbox-ready emails, powered by LLM." />
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/assets/styles.css" />
+  </head>
+  <body>
+    <div class="ambient" aria-hidden="true"></div>
+
+    <header class="app-header">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="4" width="20" height="16" rx="2"/>
+            <path d="M22 4L12 13 2 4"/>
+          </svg>
+        </div>
+        <div>
+          <h1>MailCraft</h1>
+          <span class="brand-tagline">Turn intent into inbox-ready emails</span>
+        </div>
+      </div>
+      <nav class="meta-info" aria-label="Session info">
+        <span id="provider-badge" class="badge" title="Active model provider">provider: …</span>
+        <span id="model-badge" class="badge" title="Active model">model: …</span>
+      </nav>
+    </header>
+
+    <main class="layout">
+      <!-- ── Card 1: Compose ────────────── -->
+      <section class="card card--compose" aria-labelledby="compose-heading">
+        <div class="card-label">
+          <h2 id="compose-heading">Compose</h2>
+          <span class="card-desc">Define what your email should say</span>
+        </div>
+        <form id="compose-form" class="form" novalidate>
+
+          <label class="field">
+            <span class="field-label">Intent <span class="req" aria-hidden="true">*</span></span>
+            <div class="input-wrap">
+              <input
+                id="intent"
+                name="intent"
+                type="text"
+                required
+                minlength="3"
+                maxlength="400"
+                placeholder="Follow up after client review meeting"
+                autocomplete="off"
+              />
+              <span class="char-count" id="intent-count" aria-live="polite">0 / 400</span>
+            </div>
+            <span class="field-hint">What is the email supposed to accomplish?</span>
+          </label>
+
+          <fieldset class="field field--facts">
+            <legend class="field-label">Key facts <span class="req" aria-hidden="true">*</span></legend>
+            <div id="facts-list" class="facts-list" role="list"></div>
+            <button type="button" id="add-fact" class="btn btn--add">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+              Add fact
+            </button>
+            <span class="field-hint">Every fact will be woven into the email.</span>
+          </fieldset>
+
+          <div class="field">
+            <span class="field-label">Tone <span class="req" aria-hidden="true">*</span></span>
+            <div id="tone-pills" class="tone-pills" role="radiogroup" aria-label="Email tone">
+              <button type="button" class="tone-pill active" data-tone="formal" role="radio" aria-checked="true" tabindex="0">Formal</button>
+              <button type="button" class="tone-pill" data-tone="casual" role="radio" aria-checked="false" tabindex="-1">Casual</button>
+              <button type="button" class="tone-pill" data-tone="urgent" role="radio" aria-checked="false" tabindex="-1">Urgent</button>
+              <button type="button" class="tone-pill" data-tone="empathetic" role="radio" aria-checked="false" tabindex="-1">Empathetic</button>
+              <button type="button" class="tone-pill" data-tone="friendly" role="radio" aria-checked="false" tabindex="-1">Friendly</button>
+              <button type="button" class="tone-pill" data-tone="assertive" role="radio" aria-checked="false" tabindex="-1">Assertive</button>
+              <button type="button" class="tone-pill" data-tone="apologetic" role="radio" aria-checked="false" tabindex="-1">Apologetic</button>
+              <button type="button" class="tone-pill" data-tone="enthusiastic" role="radio" aria-checked="false" tabindex="-1">Enthusiastic</button>
+              <button type="button" class="tone-pill" data-tone="neutral" role="radio" aria-checked="false" tabindex="-1">Neutral</button>
+            </div>
+            <input type="hidden" id="tone" name="tone" value="formal" />
+          </div>
+
+          <label class="field">
+            <span class="field-label">Tone modifier <span class="field-optional">(optional)</span></span>
+            <input
+              id="tone-modifier"
+              name="tone_modifier"
+              type="text"
+              maxlength="120"
+              placeholder="E.g. slightly warmer, but still concise"
+              autocomplete="off"
+            />
+          </label>
+
+          <label class="field">
+            <span class="field-label">Prompt strategy</span>
+            <select id="prompt-version" name="prompt_version">
+              <option value="advanced_v1" selected>advanced_v1 — role + few-shot + self-rubric</option>
+              <option value="baseline_v1">baseline_v1 — minimal role prompt</option>
+            </select>
+          </label>
+
+          <button type="submit" id="generate-btn" class="btn btn--primary">
+            <span class="btn-text">Generate email</span>
+            <svg class="btn-spinner" width="18" height="18" viewBox="0 0 24 24" fill="none" hidden>
+              <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2.5" opacity="0.2"/>
+              <path d="M12 2a10 10 0 0 1 10 10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <div id="form-error" class="form-error" role="alert" hidden></div>
+        </form>
+      </section>
+
+      <!-- ── Card 2: Preview ────────────── -->
+      <section class="card card--preview" aria-labelledby="preview-heading">
+        <div class="card-head">
+          <div class="card-label">
+            <h2 id="preview-heading">Preview</h2>
+            <span class="card-desc" id="preview-desc">Your generated email appears here</span>
+          </div>
+          <div class="card-actions">
+            <button id="regen-btn" class="btn btn--ghost" disabled>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+              Regenerate
+            </button>
+            <button id="copy-btn" class="btn btn--ghost" disabled>
+              <svg class="copy-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              <span class="copy-label">Copy</span>
+            </button>
+          </div>
+        </div>
+
+        <div id="status" class="status status--idle" role="status">
+          <svg class="idle-icon" width="48" height="48" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+            <rect x="6" y="12" width="36" height="24" rx="3" stroke="currentColor" stroke-width="1.5" opacity="0.2"/>
+            <path d="M42 12L24 27 6 12" stroke="currentColor" stroke-width="1.5" opacity="0.2"/>
+            <circle cx="38" cy="10" r="3" fill="var(--accent)" opacity="0.5"/>
+            <circle cx="10" cy="38" r="2" fill="var(--accent)" opacity="0.3"/>
+          </svg>
+          <p class="idle-title">Ready to craft your email</p>
+          <p class="idle-hint">Fill in your brief and hit Generate</p>
+        </div>
+
+        <div id="email-output" class="email-output" hidden>
+          <div class="email-preview" id="email-preview">
+            <div class="email-preview-toolbar">
+              <div class="email-preview-dots">
+                <span></span><span></span><span></span>
+              </div>
+              <span class="email-preview-title">New Email</span>
+            </div>
+            <div class="email-preview-fields">
+              <div class="email-field">
+                <span class="email-field-label">Subject</span>
+                <span class="email-field-value" id="subject-out"></span>
+              </div>
+            </div>
+            <div class="email-preview-body" id="body-out"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Card 3: Analysis ───────────── -->
+      <section class="card card--analysis" aria-labelledby="analysis-heading">
+        <div class="card-label">
+          <h2 id="analysis-heading">Analysis</h2>
+          <span class="card-desc">Quality metrics and metadata</span>
+        </div>
+
+        <div id="insights-empty" class="insights-empty">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
+            <rect x="3" y="12" width="4" height="9" rx="1" opacity="0.25"/>
+            <rect x="10" y="8" width="4" height="13" rx="1" opacity="0.25"/>
+            <rect x="17" y="4" width="4" height="17" rx="1" opacity="0.25"/>
+          </svg>
+          <p>Generate an email to see analysis</p>
+        </div>
+
+        <div id="insights-content" class="insights-content" hidden>
+          <div class="result-meta" id="result-meta"></div>
+
+          <div class="coverage" aria-labelledby="coverage-heading">
+            <div class="coverage-header">
+              <h3 id="coverage-heading">Fact coverage</h3>
+              <span class="coverage-pct" id="coverage-pct"></span>
+            </div>
+            <div class="coverage-bar"><div class="coverage-bar-fill" id="coverage-bar-fill"></div></div>
+            <ul id="coverage-list" class="coverage-list"></ul>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <dialog id="regen-dialog" class="dialog">
+      <form method="dialog" class="form">
+        <h3>Regenerate draft</h3>
+        <p class="dialog-desc">Describe how you'd like the email revised.</p>
+        <label class="field">
+          <span class="field-label">Revision instruction</span>
+          <textarea id="regen-instruction" rows="4" required placeholder="Make it shorter and slightly warmer."></textarea>
+        </label>
+        <div class="dialog-actions">
+          <button value="cancel" class="btn btn--ghost">Cancel</button>
+          <button id="regen-confirm" value="confirm" class="btn btn--primary btn--compact">Regenerate</button>
+        </div>
+      </form>
+    </dialog>
+
+    <footer class="app-footer">
+      <span>MailCraft v1.0</span>
+      <a href="/docs" target="_blank" rel="noopener">API docs</a>
+    </footer>
+
+    <script type="module" src="/assets/app.js"></script>
+  </body>
+</html>

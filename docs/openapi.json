@@ -1,0 +1,990 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "MailCraft API",
+    "description": "MailCraft \u2014 Turn intent into inbox-ready emails, powered by LLM. Generates professional emails from (intent, key_facts, tone) using advanced prompting. Includes a comparison-ready evaluation harness.",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/healthz": {
+      "get": {
+        "tags": [
+          "meta"
+        ],
+        "summary": "Liveness probe",
+        "operationId": "healthz_healthz_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Healthz Healthz Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/readyz": {
+      "get": {
+        "tags": [
+          "meta"
+        ],
+        "summary": "Readiness probe",
+        "operationId": "readyz_readyz_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Readyz Readyz Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/meta": {
+      "get": {
+        "tags": [
+          "meta"
+        ],
+        "summary": "App metadata",
+        "operationId": "meta_v1_meta_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Meta V1 Meta Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/generate": {
+      "post": {
+        "tags": [
+          "generation"
+        ],
+        "summary": "Generate an email draft",
+        "description": "Turn a structured brief \u2014 intent, key facts, tone \u2014 into a polished email draft. The selected `prompt_version` (default `advanced_v1`) controls which prompt strategy is used. The response includes per-fact coverage so callers can highlight missing facts.",
+        "operationId": "generate_v1_generate_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenerateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenerateResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error (empty facts, bad tone, etc.)"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "502": {
+            "description": "Upstream model failure"
+          },
+          "504": {
+            "description": "Model timeout"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/regenerate": {
+      "post": {
+        "tags": [
+          "generation"
+        ],
+        "summary": "Regenerate a draft with a revision instruction",
+        "operationId": "regenerate_v1_regenerate_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegenerateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenerateResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error"
+          },
+          "404": {
+            "description": "Draft not found"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/drafts/{draft_id}": {
+      "get": {
+        "tags": [
+          "generation"
+        ],
+        "summary": "Fetch a persisted draft by id",
+        "operationId": "get_draft_v1_drafts__draft_id__get",
+        "parameters": [
+          {
+            "name": "draft_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Draft Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DraftResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Draft not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "generation"
+        ],
+        "summary": "Delete a draft and its revisions",
+        "operationId": "delete_draft_v1_drafts__draft_id__delete",
+        "parameters": [
+          {
+            "name": "draft_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Draft Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DraftDeletedResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Draft not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/drafts/{draft_id}/revisions": {
+      "get": {
+        "tags": [
+          "generation"
+        ],
+        "summary": "List revisions for a draft (history of prior generations)",
+        "operationId": "list_revisions_v1_drafts__draft_id__revisions_get",
+        "parameters": [
+          {
+            "name": "draft_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Draft Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RevisionResponse"
+                  },
+                  "title": "Response List Revisions V1 Drafts  Draft Id  Revisions Get"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Draft not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/evaluations/run": {
+      "post": {
+        "tags": [
+          "evaluation"
+        ],
+        "summary": "Start a comparative evaluation run",
+        "description": "Kicks off a background evaluation of two configurations (model or prompt strategy) against the configured scenario set. Poll `GET /v1/evaluations/{id}` for status and the winner recommendation.",
+        "operationId": "start_eval_v1_evaluations_run_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EvalRunRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EvalRunResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/evaluations/{evaluation_run_id}": {
+      "get": {
+        "tags": [
+          "evaluation"
+        ],
+        "summary": "Fetch evaluation status + averages + artifact paths",
+        "operationId": "get_eval_v1_evaluations__evaluation_run_id__get",
+        "parameters": [
+          {
+            "name": "evaluation_run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Evaluation Run Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EvalRunResult"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Evaluation run not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "DraftDeletedResponse": {
+        "properties": {
+          "draft_id": {
+            "type": "string",
+            "title": "Draft Id"
+          },
+          "deleted": {
+            "type": "boolean",
+            "title": "Deleted",
+            "default": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "draft_id"
+        ],
+        "title": "DraftDeletedResponse"
+      },
+      "DraftResponse": {
+        "properties": {
+          "draft_id": {
+            "type": "string",
+            "title": "Draft Id"
+          },
+          "intent": {
+            "type": "string",
+            "title": "Intent"
+          },
+          "key_facts": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Key Facts"
+          },
+          "tone": {
+            "type": "string",
+            "title": "Tone"
+          },
+          "subject_suggestion": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Subject Suggestion"
+          },
+          "email_body": {
+            "type": "string",
+            "title": "Email Body"
+          },
+          "prompt_version": {
+            "type": "string",
+            "title": "Prompt Version"
+          },
+          "model_id": {
+            "type": "string",
+            "title": "Model Id"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "revisions": {
+            "type": "integer",
+            "title": "Revisions"
+          }
+        },
+        "type": "object",
+        "required": [
+          "draft_id",
+          "intent",
+          "key_facts",
+          "tone",
+          "subject_suggestion",
+          "email_body",
+          "prompt_version",
+          "model_id",
+          "created_at",
+          "revisions"
+        ],
+        "title": "DraftResponse"
+      },
+      "EvalAveragesByConfig": {
+        "properties": {
+          "fact_inclusion": {
+            "type": "number",
+            "title": "Fact Inclusion"
+          },
+          "tone_alignment": {
+            "type": "number",
+            "title": "Tone Alignment"
+          },
+          "professional_quality": {
+            "type": "number",
+            "title": "Professional Quality"
+          },
+          "weighted_total": {
+            "type": "number",
+            "title": "Weighted Total"
+          }
+        },
+        "type": "object",
+        "required": [
+          "fact_inclusion",
+          "tone_alignment",
+          "professional_quality",
+          "weighted_total"
+        ],
+        "title": "EvalAveragesByConfig"
+      },
+      "EvalConfig": {
+        "properties": {
+          "model_id": {
+            "type": "string",
+            "title": "Model Id"
+          },
+          "prompt_version": {
+            "type": "string",
+            "title": "Prompt Version"
+          },
+          "label": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Label"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "model_id",
+          "prompt_version"
+        ],
+        "title": "EvalConfig"
+      },
+      "EvalRunRequest": {
+        "properties": {
+          "run_name": {
+            "type": "string",
+            "maxLength": 120,
+            "minLength": 1,
+            "title": "Run Name"
+          },
+          "config_a": {
+            "$ref": "#/components/schemas/EvalConfig"
+          },
+          "config_b": {
+            "$ref": "#/components/schemas/EvalConfig"
+          },
+          "scenario_set_id": {
+            "type": "string",
+            "title": "Scenario Set Id",
+            "default": "default_10"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "run_name",
+          "config_a",
+          "config_b"
+        ],
+        "title": "EvalRunRequest"
+      },
+      "EvalRunResponse": {
+        "properties": {
+          "evaluation_run_id": {
+            "type": "string",
+            "title": "Evaluation Run Id"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "queued",
+              "running",
+              "completed",
+              "failed"
+            ],
+            "title": "Status"
+          }
+        },
+        "type": "object",
+        "required": [
+          "evaluation_run_id",
+          "status"
+        ],
+        "title": "EvalRunResponse"
+      },
+      "EvalRunResult": {
+        "properties": {
+          "evaluation_run_id": {
+            "type": "string",
+            "title": "Evaluation Run Id"
+          },
+          "run_name": {
+            "type": "string",
+            "title": "Run Name"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "queued",
+              "running",
+              "completed",
+              "failed"
+            ],
+            "title": "Status"
+          },
+          "config_a": {
+            "$ref": "#/components/schemas/EvalConfig"
+          },
+          "config_b": {
+            "$ref": "#/components/schemas/EvalConfig"
+          },
+          "average_scores": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "$ref": "#/components/schemas/EvalAveragesByConfig"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Average Scores"
+          },
+          "artifact_paths": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Artifact Paths"
+          },
+          "recommended_winner": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Recommended Winner"
+          },
+          "failure_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Failure Reason"
+          }
+        },
+        "type": "object",
+        "required": [
+          "evaluation_run_id",
+          "run_name",
+          "status",
+          "config_a",
+          "config_b"
+        ],
+        "title": "EvalRunResult"
+      },
+      "FactCoverageItem": {
+        "properties": {
+          "fact": {
+            "type": "string",
+            "title": "Fact"
+          },
+          "included": {
+            "type": "boolean",
+            "title": "Included"
+          },
+          "evidence": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Evidence"
+          }
+        },
+        "type": "object",
+        "required": [
+          "fact",
+          "included"
+        ],
+        "title": "FactCoverageItem"
+      },
+      "GenerateRequest": {
+        "properties": {
+          "intent": {
+            "type": "string",
+            "minLength": 3,
+            "title": "Intent"
+          },
+          "key_facts": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Key Facts"
+          },
+          "tone": {
+            "type": "string",
+            "title": "Tone"
+          },
+          "revision_instruction": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Revision Instruction"
+          },
+          "prompt_version": {
+            "type": "string",
+            "title": "Prompt Version",
+            "default": "advanced_v1"
+          },
+          "model_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Model Id"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "intent",
+          "key_facts",
+          "tone"
+        ],
+        "title": "GenerateRequest"
+      },
+      "GenerateResponse": {
+        "properties": {
+          "request_id": {
+            "type": "string",
+            "title": "Request Id"
+          },
+          "draft_id": {
+            "type": "string",
+            "title": "Draft Id"
+          },
+          "subject_suggestion": {
+            "type": "string",
+            "title": "Subject Suggestion"
+          },
+          "email_body": {
+            "type": "string",
+            "title": "Email Body"
+          },
+          "fact_coverage": {
+            "items": {
+              "$ref": "#/components/schemas/FactCoverageItem"
+            },
+            "type": "array",
+            "title": "Fact Coverage"
+          },
+          "model_id": {
+            "type": "string",
+            "title": "Model Id"
+          },
+          "prompt_version": {
+            "type": "string",
+            "title": "Prompt Version"
+          },
+          "latency_ms": {
+            "type": "integer",
+            "title": "Latency Ms"
+          }
+        },
+        "type": "object",
+        "required": [
+          "request_id",
+          "draft_id",
+          "subject_suggestion",
+          "email_body",
+          "fact_coverage",
+          "model_id",
+          "prompt_version",
+          "latency_ms"
+        ],
+        "title": "GenerateResponse"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "RegenerateRequest": {
+        "properties": {
+          "draft_id": {
+            "type": "string",
+            "title": "Draft Id"
+          },
+          "revision_instruction": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Revision Instruction"
+          },
+          "prompt_version": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Prompt Version"
+          },
+          "model_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Model Id"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "draft_id",
+          "revision_instruction"
+        ],
+        "title": "RegenerateRequest"
+      },
+      "RevisionResponse": {
+        "properties": {
+          "revision_id": {
+            "type": "string",
+            "title": "Revision Id"
+          },
+          "draft_id": {
+            "type": "string",
+            "title": "Draft Id"
+          },
+          "revision_instruction": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Revision Instruction"
+          },
+          "prompt_version": {
+            "type": "string",
+            "title": "Prompt Version"
+          },
+          "model_id": {
+            "type": "string",
+            "title": "Model Id"
+          },
+          "subject_suggestion": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Subject Suggestion"
+          },
+          "email_body": {
+            "type": "string",
+            "title": "Email Body"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "revision_id",
+          "draft_id",
+          "revision_instruction",
+          "prompt_version",
+          "model_id",
+          "subject_suggestion",
+          "email_body",
+          "created_at"
+        ],
+        "title": "RevisionResponse"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "id": "g01",
+  "title": "Formal follow-up with 3 facts — all included",
+  "scenario": {
+    "intent": "Follow up after client review meeting",
+    "key_facts": [
+      "Pilot rollout starts the week of May 12",
+      "Revised pricing sheet will be sent by Friday",
+      "Case studies will be shared on Thursday"
+    ],
+    "tone": "formal"
+  },
+  "email": {
+    "subject": "Follow-up and next steps from today's review",
+    "body": "Dear Priya,\n\nThank you for your time in today's review. To recap and confirm next steps:\n\nPilot rollout remains on track for the week of May 12. I will share a revised pricing sheet by end of day Friday, and on Thursday I will send across the case studies we discussed.\n\nPlease let me know if anything above needs adjustment.\n\nBest regards,\nAlex"
+  },
+  "expected": {
+    "fact_inclusion": 1.0,
+    "structural_professional_quality": 1.0
+  }
+}

@@ -1,0 +1,551 @@
+{
+  "run_id": "eval_dcff1de52c1f",
+  "run_name": "model-comparison",
+  "generated_at": "2026-04-16T16:54:26.936696+00:00",
+  "scenario_set_id": "default_10",
+  "configs": {
+    "config_a": {
+      "model_id": "mistral.mistral-large-3-675b-instruct",
+      "prompt_version": "advanced_v1",
+      "label": "config_a"
+    },
+    "config_b": {
+      "model_id": "mistral.mistral-small-2402-v1:0",
+      "prompt_version": "advanced_v1",
+      "label": "config_b"
+    }
+  },
+  "metric_definitions": [
+    {
+      "name": "fact_inclusion",
+      "description": "Share of required facts that are detectably included in the email. Salient tokens (numbers, dates, quoted strings, proper nouns) are required; remaining content words are matched with light stemming. Deterministic. Range 0\u20131.",
+      "weight": 0.45
+    },
+    {
+      "name": "tone_alignment",
+      "description": "LLM-as-judge score against a 5-anchor rubric (1.0 strong match \u2192 0.0 wrong tone). Judges greeting/closing, register, stance, and absence of jarring register shifts. Range 0\u20131.",
+      "weight": 0.25
+    },
+    {
+      "name": "professional_quality",
+      "description": "Hybrid score: 60% LLM-judge (clarity, fluency, actionability, cohesion) + 40% deterministic structural checks (greeting, closing, length envelope, paragraphing, no placeholder text). Range 0\u20131.",
+      "weight": 0.3
+    }
+  ],
+  "metric_weights": {
+    "fact_inclusion": 0.45,
+    "tone_alignment": 0.25,
+    "professional_quality": 0.3
+  },
+  "per_scenario": [
+    {
+      "scenario_id": "S01",
+      "title": "Follow-up after client review meeting",
+      "tone": "formal",
+      "difficulty": "medium",
+      "outputs": {
+        "config_a": {
+          "subject_suggestion": "Follow-up: Pilot rollout commitments and next steps",
+          "email_body": "Dear [Client's Name],\n\nThank you for the productive review meeting earlier today. Below is a summary of the key commitments and next steps to ensure we stay aligned:\n\n- The pilot rollout remains on track for the week of May 12.\n- A revised pricing sheet will be sent to you by end of day Friday.\n- Case studies will be shared by Thursday.\n\nTo proceed smoothly, we kindly request your confirmation on production data access by Monday. Please let us know if there are any adjustments or additional details you\u2019d like to discuss before then.\n\nBest regards,\n[Your Name]",
+          "latency_ms": 2969,
+          "prompt_version": "advanced_v1",
+          "model_id": "mistral.mistral-large-3-675b-instruct"
+        },
+        "config_b": {
+          "subject_suggestion": "Follow-up on client review meeting - confirming commitments",
+          "email_body": "Dear [Client Name],\n\nThank you for taking the time to review our plans and discuss the upcoming pilot rollout. Here is a summary of our commitments and next steps:\n\n1. The pilot rollout is scheduled for the week of May 12.\n2. I will send a revised pricing sheet by end of day Friday.\n3. Case studies will be shared on Thursday.\n4. We require confirmation on production data access by Monday.\n\nPlease let me know if there are any changes or additional information needed from your end.\n\nBest regards,\n[Your Name]",
+          "latency_ms": 6453,
+          "prompt_version": "advanced_v1",
+          "model_id": "mistral.mistral-small-2402-v1:0"
+        }
+      },
+      "scores": {
+        "config_a": {
+          "fact_inclusion": 1.0,
+          "tone_alignment": 1.0,
+          "professional_quality": 0.92,
+          "weighted_total": 0.976
+        },
+        "config_b": {
+          "fact_inclusion": 1.0,
+          "tone_alignment": 1.0,
+          "professional_quality": 0.92,
+          "weighted_total": 0.976
+        }
+      },
+      "rationales": {
+        "config_a": {
+          "fact_inclusion": "4/4 facts detected.",
+          "tone_alignment": "The email perfectly aligns with the requested formal tone, utilizing a professional greeting and closing, polite phrasing ('kindly request'), and structured, business-appropriate vocabulary without any jarring register shifts.",
+          "professional_quality": "The email is exceptionally clear, well-structured, and grammatically flawless. It effectively uses bullet points for readability and provides a highly explicit next step for the recipient. | structural=0.80 checks={'has_greeting': True, 'has_closing': True, 'length_ok': True, 'paragraphs': True, 'no_obvious_placeholder': False}"
+        },
+        "config_b": {
+          "fact_inclusion": "4/4 facts detected.",
+          "tone_alignment": "The email perfectly aligns with the requested formal tone, utilizing a professional greeting and closing, avoiding contractions, and maintaining an objective, polite register throughout without any jarring shifts.",
+          "professional_quality": "The email is exceptionally clear, well-structured, and professional, utilizing bullet points to make next steps and deadlines highly actionable. The flow from greeting to closing is seamless and free of grammatical errors. | structural=0.80 checks={'has_greeting': True, 'has_closing': True, 'length_ok': True, 'paragraphs': True, 'no_obvious_placeholder': False}"
+        }
+      }
+    },
+    {
+      "scenario_id": "S02",
+      "title": "Request for detailed proposal",
+      "tone": "formal",
+      "difficulty": "medium",
+      "outputs": {
+        "config_a": {
+          "subject_suggestion": "Request for Proposal: Migration of 12 Services by September 30",
+          "email_body": "Dear Team,\n\nI hope this message finds you well. I am writing to request a detailed proposal for the migration of 12 services to our new platform. Below are the key requirements and constraints:\n\n- **Scope**: The proposal should cover the migration of all 12 services, including dependencies and integration points.\n- **Timeline**: The target go-live date is September 30, so we will need a clear project timeline with milestones.\n- **Budget**: The total budget ceiling for this initiative is 180,000 USD.\n\nPlease ensure the proposal is submitted by **April 30** for review. Let me know if you need any additional details or clarifications to proceed.\n\nThank you for your prompt attention to this matter.\n\nBest regards,\n[Your Name]",
+          "latency_ms": 2943,
+          "prompt_version": "advanced_v1",
+          "model_id": "mistral.mistral-large-3-675b-instruct"
+        },
+        "config_b": {
+          "subject_suggestion": "Request for detailed proposal: migration of 12 services to new platform",
+          "email_body": "Dear Team,\n\nI am writing to request a detailed proposal for the migration of 12 services to our new platform. The proposal should include the scope of work, timeline, and pricing, with a target go-live date of September 30.\n\nThe budget ceiling for this project is 180,000 USD. Please ensure that your proposal is comprehensive and meets this budget constraint.\n\nThe proposal is due by April 30. Please send it to my email address for review.\n\nThank you for your attention to this matter. I look forward to receiving your proposal.\n\nBest regards,\nAlex",
+          "latency_ms": 6785,
+          "prompt_version": "advanced_v1",
+          "model_id": "mistral.mistral-small-2402-v1:0"
+        }
+      },
+      "scores": {
+        "config_a": {
+          "fact_inclusion": 1.0,
+          "tone_alignment": 1.0,
+          "professional_quality": 0.92,
+          "weighted_total": 0.976
+        },
+        "config_b": {
+          "fact_inclusion": 1.0,
+          "tone_alignment": 1.0,
+          "professional_quality": 1.0,
+          "weighted_total": 1.0
+        }
+      },
+      "rationales": {
+        "config_a": {
+          "fact_inclusion": "4/4 facts detected.",
+          "tone_alignment": "The email perfectly aligns with the requested formal tone, utilizing appropriate professional greetings and closings ('Dear Team', 'Best regards'). The vocabulary and sentence structure ('I am writing to request', 'prompt attention to this matter') consistently maintain a formal register without any jarring shifts.",
+          "professional_quality": "The email is exceptionally clear, well-structured, and uses bullet points effectively to convey key constraints. The requested action and deadline are explicit, resulting in a highly professional and cohesive message. | structural=0.80 checks={'has_greeting': True, 'has_closing': True, 'length_ok': True, 'paragraphs': True, 'no_obvious_placeholder': False}"
+        },
+        "config_b": {
+          "fact_inclusion": "4/4 facts detected.",
+          "tone_alignment": "The email uses a consistently formal register, employing standard professional phrasing such as 'I am writing to request,' 'budget constraint,' and 'attention to this matter.' The greeting and closing are perfectly suited for a formal business context, with no casual language or jarring shifts.",
+          "professional_quality": "The email is exceptionally clear, fluent, and well-structured, flowing logically from the initial request to specific constraints. The required actions and deadlines are explicitly stated, making it highly actionable for the recipient. | structural=1.00 checks={'has_greeting': True, 'has_closing': True, 'length_ok': True, 'paragraphs': True, 'no_obvious_placeholder': True}"
+        }
+      }
+    },
+    {
+      "scenario_id": "S03",
+      "title": "Reschedule a meeting",
+      "tone": "casual",
+      "difficulty": "easy",
+      "outputs": {
+        "config_a": {
+          "subject_suggestion": "Rescheduling Thursday\u2019s meeting \u2014 alternatives?",
+          "email_body": "Hi there,\n\nHope you're doing well. I\u2019m reaching out because I need to reschedule our meeting originally set for Thursday at 10:00 UTC. Would either Friday at 14:00 UTC or Monday at 09:00 UTC work for you? The meeting would still be 45 minutes long.\n\nLet me know what fits best for you, or if there\u2019s another time that works better.\n\nThanks,\nAlex",
+          "latency_ms": 2079,
+          "prompt_version": "advanced_v1",
+          "model_id": "mistral.mistral-large-3-675b-instruct"
+        },
+        "config_b": {
+          "subject_suggestion": "Rescheduling our meeting this Thursday",
+          "email_body": "Hi there,\n\nHope this message finds you well. I wanted to touch base about our meeting scheduled for this Thursday at 10:00 UTC. Unfortunately, I've run into a conflict and won't be able to make it at that time.\n\nI'm proposing two alternatives: Friday at 14:00 UTC or Monday at 09:00 UTC. Both slots are 45 minutes long, just like our original plan.\n\nPlease let me know which one works best for you, and I'll send out an updated calendar invite accordingly.\n\nLooking forward to our discussion!\nBest,\nAlex",
+          "latency_ms": 5628,
+          "prompt_version": "advanced_v1",
+          "model_id": "mistral.mistral-small-2402-v1:0"
+        }
+      },
+      "scores": {
+        "config_a": {
+          "fact_inclusion": 1.0,
+          "tone_alignment": 1.0,
+          "professional_quality": 1.0,
+          "weighted_total": 1.0
+        },
+        "config_b": {
+          "fact_inclusion": 1.0,
+          "tone_alignment": 0.75,
+          "professional_quality": 1.0,
+          "weighted_total": 0.9375
+        }
+      },
+      "rationales": {
+        "config_a": {
+          "fact_inclusion": "3/3 facts detected.",
+          "tone_alignment": "The email successfully adopts a casual tone through the use of relaxed greetings and closings ('Hi there', 'Thanks'), conversational phrasing ('Hope you're doing well', 'Let me know what fits best'), and consistent use of contractions. There are no jarring shifts into a formal register.",
+          "professional_quality": "The email is exceptionally clear, fluent, and well-structured, seamlessly flowing from the greeting to the purpose of the message. It provides highly actionable next steps by offering specific alternative meeting times while remaining flexible. | structural=1.00 checks={'has_greeting': True, 'has_closing': True, 'length_ok': True, 'paragraphs': True, 'no_obvious_placeholder': True}"
+        },
+        "config_b": {
+          "fact_inclusion": "3/3 facts detected.",
+          "tone_alignment": "The email uses a mostly conversational and relaxed register ('Hi there,' 'touch base,' 'won't be able to make it'), though a few phrases ('Hope this message finds you well,' 'accordingly') lean slightly formal or corporate.",
+          "professional_quality": "The email is exceptionally clear, fluent, and well-structured, with a logical flow from the greeting to the closing. It provides explicit alternative times and a clear call to action, making it highly professional and actionable. | structural=1.00 checks={'has_greeting': True, 'has_closing': True, 'length_ok': True, 'paragraphs': True, 'no_obvious_placeholder': True}"
+        }
+      }
+    },
+    {
+      "scenario_id": "S04",
+      "title": "Delay notification and apology",
+      "tone": "apologetic",
+      "difficulty": "hard",
+      "outputs": {
+        "config_a": {
+          "subject_suggestion": "Update on Q2 Quarterly Report \u2014 New Delivery Date",
+          "email_body": "Dear Jordan,\n\nI\u2019m writing to sincerely apologize for the delay in delivering the Quarterly Report, which we had originally promised for April 12. Due to an unexpected recompute of our data pipeline following a schema change, we now expect to share the report with you by **April 18**.\n\nWe understand the inconvenience this may cause and want to make it right. To help bridge the gap, I\u2019d like to offer a 30-minute walkthrough of the report once it\u2019s ready, so you can quickly get up to speed on the insights. Please let me know if this works for you or if there\u2019s another way we can support you in the meantime.\n\nAgain, my apologies for the delay, and thank you for your patience and understanding. I\u2019ll keep you updated on our progress and ensure you receive the report as soon as it\u2019s finalized.\n\nBest regards,\nAlex",
+          "latency_ms": 3357,
+          "prompt_version": "advanced_v1",
+          "model_id": "mistral.mistral-large-3-675b-instruct"
+        },
+        "config_b": {
+          "subject_suggestion": "Apologies for the delay in your quarterly report delivery",
+          "email_body": "Dear [Customer],\n\nI hope this message finds you well. I am writing to inform you about a delay in the delivery of the quarterly report that was originally promised for April 12.\n\nDue to an unforeseen data pipeline recompute after a schema change, we have had to adjust our timeline. The new delivery date for the report is now April 18.\n\nI understand that this delay may cause inconvenience, and I sincerely apologize for any disruption this may have caused to your plans. To make up for this delay, I would like to offer you a 30-minute walkthrough of the report once it's ready, to help you understand the data and insights more deeply.\n\nPlease let me know if this arrangement works for you, or if there's anything else you need from our end.\n\nThank you for your understanding and patience.\n\nBest regards,\n[Your Name]",
+          "latency_ms": 7038,
+          "prompt_version": "advanced_v1",
+          "model_id": "mistral.mistral-small-2402-v1:0"
+        }
+      },
+      "scores": {
+        "config_a": {
+          "fact_inclusion": 1.0,
+          "tone_alignment": 1.0,
+          "professional_quality": 1.0,
+          "weighted_total": 1.0
+        },
+        "config_b": {
+          "fact_inclusion": 1.0,
+          "tone_alignment": 1.0,
+          "professional_quality": 0.92,
+          "weighted_total": 0.976
+        }
+      },
+      "rationales": {
+        "config_a": {
+          "fact_inclusion": "4/4 facts detected.",
+          "tone_alignment": "The email unambiguously reflects an apologetic tone through phrases like 'sincerely apologize,' 'understand the inconvenience,' and 'my apologies for the delay.' The professional register, appropriate greeting/closing, and offer to make amends perfectly align with the requested tone without any contradictory cues.",
+          "professional_quality": "The email is exceptionally clear, grammatically flawless, and flows logically from the apology to the proposed solution. The call to action is explicit and polite. | structural=1.00 checks={'has_greeting': True, 'has_closing': True, 'length_ok': True, 'paragraphs': True, 'no_obvious_placeholder': True}"
+        },
+        "config_b": {
+          "fact_inclusion": "4/4 facts detected.",
+          "tone_alignment": "The email strongly aligns with the apologetic tone by explicitly acknowledging the inconvenience, offering a sincere apology, and providing a compensatory gesture. The professional register and polite framing remain consistent throughout without any defensive or jarring shifts.",
+          "professional_quality": "The email is highly professional, clearly explaining the delay and offering a concrete next step with excellent flow and natural phrasing. | structural=0.80 checks={'has_greeting': True, 'has_closing': True, 'length_ok': True, 'paragraphs': True, 'no_obvious_placeholder': False}"
+        }
+      }
+    },
+    {
+      "scenario_id": "S05",
+      "title": "Escalate a production outage",
+      "tone": "urgent",
+      "difficulty": "hard",
+      "outputs": {
+        "config_a": {
+          "subject_suggestion": "URGENT: Checkout outage \u2014 SRE needed in #inc-payments-042 (42% error rate)",
+          "email_body": "Team,\n\nWe have an active production outage. Checkout error rate spiked to 42% at 09:10 UTC and remains elevated. The incident is being tracked in #inc-payments-042.\n\nKey context: the last successful deploy was at 08:40 UTC.\n\nPlease page an on-call SRE into the channel within the next 15 minutes to help restore service.\n\nThank you,\nAlex",
+          "latency_ms": 1927,
+          "prompt_version": "advanced_v1",
+          "model_id": "mistral.mistral-large-3-675b-instruct"
+        },
+        "config_b": {
+          "subject_suggestion": "URGENT: Checkout outage - On-call SRE needed within 15 min",
+          "email_body": "Team,\n\nWe are currently experiencing a critical issue with the checkout process. The error rate spiked to 42% at 09:10 UTC and is still ongoing. The incident is being coordinated in channel #inc-payments-042.\n\nPlease page an on-call SRE into the channel within the next 15 minutes to help resolve this issue. The last successful deploy was at 08:40 UTC.\n\nThank you for your immediate attention to this matter.\n\nBest,\nAlex",
+          "latency_ms": 6397,
+          "prompt_version": "advanced_v1",
+          "model_id": "mistral.mistral-small-2402-v1:0"
+        }
+      },
+      "scores": {
+        "config_a": {
+          "fact_inclusion": 1.0,
+          "tone_alignment": 1.0,
+          "professional_quality": 1.0,
+          "weighted_total": 1.0
+        },
+        "config_b": {
+          "fact_inclusion": 1.0,
+          "tone_alignment": 1.0,
+          "professional_quality": 1.0,
+          "weighted_total": 1.0
+        }
+      },
+      "rationales": {
+        "config_a": {
+          "fact_inclusion": "4/4 facts detected.",
+          "tone_alignment": "The email perfectly captures an urgent tone through its direct subject line, concise and data-driven explanation of the outage, and a clear, time-bound call to action. There are no jarring shifts or unnecessary pleasantries that would dilute the urgency.",
+          "professional_quality": "The email is exceptionally clear, concise, and professional, perfectly suited for an urgent incident response. It provides precise context and a highly explicit, time-bound call to action without any grammatical issues or awkward phrasing. | structural=1.00 checks={'has_greeting': True, 'has_closing': True, 'length_ok': True, 'paragraphs': True, 'no_obvious_placeholder': True}"
+        },
+        "config_b": {
+          "fact_inclusion": "4/4 facts detected.",
+          "tone_alignment": "The email perfectly captures an urgent tone through its use of a time-sensitive subject line, precise data points, and a clear, immediate deadline for action. The direct register and lack of unnecessary fluff unambiguously align with the requested tone.",
+          "professional_quality": "The email is exceptionally clear, fluent, and cohesive, perfectly suited for an urgent incident response. The required action is highly explicit and time-bound, ensuring immediate next steps are understood. | structural=1.00 checks={'has_greeting': True, 'has_closing': True, 'length_ok': True, 'paragraphs': True, 'no_obvious_placeholder': True}"
+        }
+      }
+    },
+    {
+      "scenario_id": "S06",
+      "title": "Empathetic response to a dissatisfied client",
+      "tone": "empathetic",
+      "difficulty": "hard",
+      "outputs": {
+        "config_a": {
+          "subject_suggestion": "Follow-up on SLA concerns and next steps",
+          "email_body": "Dear Jordan,\n\nI want to sincerely thank you for bringing your concerns to our attention regarding the missed SLAs in March. I completely understand the frustration this must have caused, and I appreciate the trust you\u2019ve placed in us by sharing your feedback.\n\nTo address this directly, we\u2019re taking the following steps:\n\n- A dedicated Customer Success Manager will be assigned to your account by end of day tomorrow to ensure closer oversight and faster response times.\n- Our team is already conducting a formal root-cause analysis, which we will share with you within the next 7 days.\n- We\u2019ve scheduled a review on April 22 at 15:00 UTC to walk through the findings and discuss any further adjustments needed.\n\nI\u2019ll personally follow up after the root-cause analysis is delivered to ensure we\u2019re aligned on the path forward. In the meantime, please don\u2019t hesitate to reach out if there\u2019s anything else we can do to support you.\n\nWith gratitude,\nAlex",
+          "latency_ms": 3517,
+          "prompt_version": "advanced_v1",
+          "model_id": "mistral.mistral-large-3-675b-instruct"
+        },
+        "config_b": {
+          "subject_suggestion": "Apology for recent service disruptions and next steps",
+          "email_body": "Dear [Client],\n\nI hope this email finds you well. I wanted to reach out and apologize for the recent service disruptions that resulted in three missed SLAs in March.\n\nWe understand the inconvenience this has caused and we are taking immediate steps to rectify the situation. To ensure that you receive the support and attention you deserve, we are assigning a dedicated customer success manager to your account. This individual will be your primary point of contact and will work closely with you to address any concerns and ensure that our services meet your expectations.\n\nAdditionally, we will be conducting a formal root-cause analysis of the issues that led to the missed SLAs. This analysis will be completed within the next 7 days and we will share the results with you, along with a detailed plan for preventing similar issues in the future.\n\nOur next review is scheduled for April 22 at 15:00 UTC. In the meantime, please do not hesitate to reach out to me directly if you have any questions or concerns.\n\nThank you for your patience and understanding. We value your business and are committed to providing you with the highest level of service.\n\nBest regards,\n[Your Name]",
+          "latency_ms": 7775,
+          "prompt_version": "advanced_v1",
+          "model_id": "mistral.mistral-small-2402-v1:0"
+        }
+      },
+      "scores": {
+        "config_a": {
+          "fact_inclusion": 1.0,
+          "tone_alignment": 1.0,
+          "professional_quality": 0.92,
+          "weighted_total": 0.976
+        },
+        "config_b": {
+          "fact_inclusion": 1.0,
+          "tone_alignment": 0.75,
+          "professional_quality": 0.92,
+          "weighted_total": 0.9135
+        }
+      },
+      "rationales": {
+        "config_a": {
+          "fact_inclusion": "4/4 facts detected.",
+          "tone_alignment": "The email strongly aligns with the empathetic tone through validating phrases like 'I completely understand the frustration' and 'appreciate the trust.' The warm greeting, closing, and supportive transition into actionable steps maintain this caring stance without any jarring shifts.",
+          "professional_quality": "The email is exceptionally clear, fluent, and professional, using bullet points to make next steps highly actionable while maintaining a logical and cohesive flow. | structural=0.80 checks={'has_greeting': True, 'has_closing': False, 'length_ok': True, 'paragraphs': True, 'no_obvious_placeholder': True}"
+        },
+        "config_b": {
+          "fact_inclusion": "4/4 facts detected.",
+          "tone_alignment": "The email successfully conveys an empathetic tone by acknowledging the client's inconvenience and offering dedicated support. However, the use of standard corporate boilerplate (like 'I hope this email finds you well' right before an apology) slightly dilutes the emotional warmth.",
+          "professional_quality": "The email is exceptionally clear, professional, and well-structured. It directly addresses the issue, outlines concrete next steps, and maintains a cohesive flow from the apology to the closing. | structural=0.80 checks={'has_greeting': True, 'has_closing': True, 'length_ok': True, 'paragraphs': True, 'no_obvious_placeholder': False}"
+        }
+      }
+    },
+    {
+      "scenario_id": "S07",
+      "title": "Internal status update for stakeholders",
+      "tone": "neutral",
+      "difficulty": "medium",
+      "outputs": {
+        "config_a": {
+          "subject_suggestion": "Weekly Update: Onboarding Service v2 Progress",
+          "email_body": "Hi Team,\n\nHere\u2019s this week\u2019s update on the Onboarding Service v2:\n\n- The service has reached feature complete status.\n- End-to-end tests are now passing at 98%.\n- Load testing is scheduled for next Tuesday.\n- The security review remains blocked pending provider approval.\n\nLet me know if you have any questions or need further details.\n\nBest,\nAlex",
+          "latency_ms": 1902,
+          "prompt_version": "advanced_v1",
+          "model_id": "mistral.mistral-large-3-675b-instruct"
+        },
+        "config_b": {
+          "subject_suggestion": "Weekly Status Update: Onboarding Service v2",
+          "email_body": "Team,\n\nI hope this email finds you well. Here's a quick update on the progress of Onboarding Service v2:\n\n- Feature complete: The onboarding service v2 has reached feature complete.\n- End-to-end tests: The end-to-end tests are passing at a rate of 98%.\n- Load testing: Load testing is planned for next Tuesday.\n- Security review: The security review is currently blocked on provider approval.\n\nPlease let me know if you have any questions or need further information.\n\nBest regards,\nAlex",
+          "latency_ms": 5576,
+          "prompt_version": "advanced_v1",
+          "model_id": "mistral.mistral-small-2402-v1:0"
+        }
+      },
+      "scores": {
+        "config_a": {
+          "fact_inclusion": 1.0,
+          "tone_alignment": 1.0,
+          "professional_quality": 1.0,
+          "weighted_total": 1.0
+        },
+        "config_b": {
+          "fact_inclusion": 1.0,
+          "tone_alignment": 1.0,
+          "professional_quality": 0.94,
+          "weighted_total": 0.982
+        }
+      },
+      "rationales": {
+        "config_a": {
+          "fact_inclusion": "4/4 facts detected.",
+          "tone_alignment": "The email perfectly aligns with a neutral tone, using objective language, standard business greetings, and a factual presentation of information without any emotional bias.",
+          "professional_quality": "The email is highly professional, utilizing bullet points for excellent clarity and readability. It flows logically from greeting to closing with perfect grammar and a clear, appropriate call to action for a status update. | structural=1.00 checks={'has_greeting': True, 'has_closing': True, 'length_ok': True, 'paragraphs': True, 'no_obvious_placeholder': True}"
+        },
+        "config_b": {
+          "fact_inclusion": "4/4 facts detected.",
+          "tone_alignment": "The email uses standard, objective language and a straightforward structure to convey information without emotional bias, perfectly matching the requested neutral tone.",
+          "professional_quality": "The email is highly clear and well-structured, making excellent use of bullet points for a status update. However, the bullet points are slightly repetitive by restating the category in the sentence, which slightly impacts cohesion and fluency. | structural=1.00 checks={'has_greeting': True, 'has_closing': True, 'length_ok': True, 'paragraphs': True, 'no_obvious_placeholder': True}"
+        }
+      }
+    },
+    {
+      "scenario_id": "S08",
+      "title": "Thank-you email after a job interview",
+      "tone": "friendly",
+      "difficulty": "easy",
+      "outputs": {
+        "config_a": {
+          "subject_suggestion": "Thank You for the Conversation on April 14",
+          "email_body": "Hi Team,\n\nI wanted to take a moment to thank you all for the engaging discussion during my interview on April 14 with the platform team. Our conversation about evaluation systems and prompt engineering was particularly insightful, and I\u2019m even more excited about the opportunity to contribute.\n\nI\u2019m looking forward to the next step\u2014the case study\u2014and am happy to jump on a follow-up call anytime this week if needed. Just let me know what works best for you.\n\nThanks again for your time and consideration!\n\nBest,\nAlex",
+          "latency_ms": 2704,
+          "prompt_version": "advanced_v1",
+          "model_id": "mistral.mistral-large-3-675b-instruct"
+        },
+        "config_b": {
+          "subject_suggestion": "Thank you for the interview on April 14 - Looking forward to next steps",
+          "email_body": "Dear [Interview Panel],\n\nI wanted to take a moment to thank you for the opportunity to interview with the platform team on April 14. I thoroughly enjoyed our discussion about evaluation systems and prompt engineering.\n\nI am excited about the possibility of contributing to your team and am looking forward to the case-study next step. I am available for a follow-up anytime this week, and please feel free to let me know if there's any additional information I can provide in the meantime.\n\nBest regards,\n[Your Name]",
+          "latency_ms": 5832,
+          "prompt_version": "advanced_v1",
+          "model_id": "mistral.mistral-small-2402-v1:0"
+        }
+      },
+      "scores": {
+        "config_a": {
+          "fact_inclusion": 1.0,
+          "tone_alignment": 1.0,
+          "professional_quality": 1.0,
+          "weighted_total": 1.0
+        },
+        "config_b": {
+          "fact_inclusion": 1.0,
+          "tone_alignment": 1.0,
+          "professional_quality": 0.92,
+          "weighted_total": 0.976
+        }
+      },
+      "rationales": {
+        "config_a": {
+          "fact_inclusion": "4/4 facts detected.",
+          "tone_alignment": "The email perfectly captures a friendly tone through its warm greeting ('Hi Team'), enthusiastic and approachable phrasing ('happy to jump on a follow-up call'), and positive emotional stance. The register is consistently polite yet conversational, with no jarring shifts.",
+          "professional_quality": "The email is exceptionally well-written, demonstrating perfect clarity, natural fluency, and a smooth, cohesive structure. It explicitly outlines the next steps regarding the case study while maintaining a polite and professional tone. | structural=1.00 checks={'has_greeting': True, 'has_closing': True, 'length_ok': True, 'paragraphs': True, 'no_obvious_placeholder': True}"
+        },
+        "config_b": {
+          "fact_inclusion": "4/4 facts detected.",
+          "tone_alignment": "The email successfully adopts a friendly and warm tone through enthusiastic phrasing like 'thoroughly enjoyed' and 'excited about the possibility.' The professional yet welcoming register perfectly matches the requested tone for a post-interview context without any jarring shifts.",
+          "professional_quality": "The email is exceptionally clear, fluent, and well-structured, seamlessly transitioning from a polite thank-you to explicit next steps. The language is professional and actionable, making it an excellent post-interview follow-up. | structural=0.80 checks={'has_greeting': True, 'has_closing': True, 'length_ok': True, 'paragraphs': True, 'no_obvious_placeholder': False}"
+        }
+      }
+    },
+    {
+      "scenario_id": "S09",
+      "title": "Request approval on a PR/CR",
+      "tone": "assertive",
+      "difficulty": "medium",
+      "outputs": {
+        "config_a": {
+          "subject_suggestion": "Final approval needed: CR-2187 before April 19 deployment",
+          "email_body": "Hi Jordan,\n\nI\u2019m reaching out for your final approval on CR-2187 in the release tracker. All required tests are green in CI run #4412, and two peers have already signed off.\n\nThe deployment window closes on April 19 at 20:00 UTC, so I\u2019d appreciate your review by then to ensure we stay on schedule.\n\nLet me know if you need any additional details.\n\nThanks,\nAlex",
+          "latency_ms": 1921,
+          "prompt_version": "advanced_v1",
+          "model_id": "mistral.mistral-large-3-675b-instruct"
+        },
+        "config_b": {
+          "subject_suggestion": "Final approval needed for CR-2187 before deployment window closes",
+          "email_body": "Hi [Reviewer],\n\nI'm writing to request your final approval on change request CR-2187. All required tests are green in CI run #4412, and two peers have already approved the change.\n\nThe deployment window closes on April 19 at 20:00 UTC. I would appreciate it if you could review and approve the change request as soon as possible to ensure we meet the deadline.\n\nYou can find the change request in the release tracker.\n\nThank you for your attention to this matter.\n\nBest regards,\nAlex",
+          "latency_ms": 6092,
+          "prompt_version": "advanced_v1",
+          "model_id": "mistral.mistral-small-2402-v1:0"
+        }
+      },
+      "scores": {
+        "config_a": {
+          "fact_inclusion": 1.0,
+          "tone_alignment": 0.75,
+          "professional_quality": 1.0,
+          "weighted_total": 0.9375
+        },
+        "config_b": {
+          "fact_inclusion": 1.0,
+          "tone_alignment": 0.75,
+          "professional_quality": 0.905,
+          "weighted_total": 0.909
+        }
+      },
+      "rationales": {
+        "config_a": {
+          "fact_inclusion": "4/4 facts detected.",
+          "tone_alignment": "The email clearly and confidently states the request, justification, and deadline, which aligns well with an assertive tone. However, standard corporate pleasantries like 'I'm reaching out' and 'I'd appreciate' slightly soften the assertiveness, making it a mostly correct rather than a strong match.",
+          "professional_quality": "The email is exceptionally clear, fluent, and cohesive, with a logical flow from the context to the request. The required action and deadline are explicitly stated, making it highly actionable. | structural=1.00 checks={'has_greeting': True, 'has_closing': True, 'length_ok': True, 'paragraphs': True, 'no_obvious_placeholder': True}"
+        },
+        "config_b": {
+          "fact_inclusion": "4/4 facts detected.",
+          "tone_alignment": "The email assertively presents the facts, prerequisites, and a strict deadline to push for approval, but softens the actual call to action with deferential phrasing ('I would appreciate it if you could'), slightly diluting the requested assertive tone.",
+          "professional_quality": "The email is highly clear, fluent, and cohesive, with a logical flow from context to the deadline. Actionability is strong, though providing a direct hyperlink to the release tracker would have made the requested action completely frictionless. | structural=0.80 checks={'has_greeting': True, 'has_closing': True, 'length_ok': True, 'paragraphs': True, 'no_obvious_placeholder': False}"
+        }
+      }
+    },
+    {
+      "scenario_id": "S10",
+      "title": "Clarification request on ambiguous requirements",
+      "tone": "neutral",
+      "difficulty": "medium",
+      "outputs": {
+        "config_a": {
+          "subject_suggestion": "Clarification needed on R-7 and R-9 before April 22",
+          "email_body": "Hi Jamie,\n\nI wanted to flag two requirements that need clarification before we begin implementation on April 22:\n\n1. **R-7 (Fast export)**: The spec mentions 'fast export' but doesn\u2019t include a latency target. Could you confirm the expected performance threshold?\n2. **R-9 (Supported regions)**: The requirement references 'supported regions' but no list is attached. Could you share the specific regions we need to account for?\n\nTo avoid delays, I\u2019d appreciate a quick 20-minute sync before Friday 17:00 UTC to align on these details. Let me know what time works for you.\n\nThanks,\nAlex",
+          "latency_ms": 2395,
+          "prompt_version": "advanced_v1",
+          "model_id": "mistral.mistral-large-3-675b-instruct"
+        },
+        "config_b": {
+          "subject_suggestion": "Clarification needed on requirements R-7 and R-9 before implementation",
+          "email_body": "Hi [Product Owner],\n\nI hope this email finds you well. I'm writing to clarify a couple of requirements before we start implementation on April 22.\n\n1. Requirement R-7 specifies 'fast export' but does not provide a latency target. Could you please provide more details on the expected performance?\n\n2. Requirement R-9 references 'supported regions' but no list is attached. Could you please provide the list of regions that need to be supported?\n\nI would appreciate it if we could have a 20-minute sync before Friday 17:00 UTC to discuss these points. Please let me know a suitable time for you.\n\nBest regards,\n[Your Name]",
+          "latency_ms": 6729,
+          "prompt_version": "advanced_v1",
+          "model_id": "mistral.mistral-small-2402-v1:0"
+        }
+      },
+      "scores": {
+        "config_a": {
+          "fact_inclusion": 1.0,
+          "tone_alignment": 1.0,
+          "professional_quality": 1.0,
+          "weighted_total": 1.0
+        },
+        "config_b": {
+          "fact_inclusion": 1.0,
+          "tone_alignment": 1.0,
+          "professional_quality": 0.92,
+          "weighted_total": 0.976
+        }
+      },
+      "rationales": {
+        "config_a": {
+          "fact_inclusion": "4/4 facts detected.",
+          "tone_alignment": "The email perfectly embodies a neutral tone, using standard professional greetings, objective and fact-based language, and a straightforward request for clarification without any emotional language or jarring shifts.",
+          "professional_quality": "The email is exceptionally clear, well-structured, and grammatically flawless. It explicitly states the required actions and flows logically from the greeting to the closing. | structural=1.00 checks={'has_greeting': True, 'has_closing': True, 'length_ok': True, 'paragraphs': True, 'no_obvious_placeholder': True}"
+        },
+        "config_b": {
+          "fact_inclusion": "4/4 facts detected.",
+          "tone_alignment": "The email maintains a perfectly neutral, professional tone through standard greetings, objective language, and polite, fact-based requests without any emotional or jarring shifts.",
+          "professional_quality": "The email is exceptionally clear, fluent, and well-structured, using bullet points to highlight specific questions. The requested next steps are highly actionable, including a specific deadline and meeting proposal. | structural=0.80 checks={'has_greeting': True, 'has_closing': True, 'length_ok': True, 'paragraphs': True, 'no_obvious_placeholder': False}"
+        }
+      }
+    }
+  ],
+  "average_scores": {
+    "config_a": {
+      "fact_inclusion": 1.0,
+      "tone_alignment": 0.975,
+      "professional_quality": 0.976,
+      "weighted_total": 0.9866
+    },
+    "config_b": {
+      "fact_inclusion": 1.0,
+      "tone_alignment": 0.925,
+      "professional_quality": 0.9445,
+      "weighted_total": 0.9646
+    }
+  },
+  "recommended_winner": "config_a",
+  "failure_modes": {
+    "loser": "config_b",
+    "metric_losses": {
+      "fact_inclusion": 0,
+      "tone_alignment": 2,
+      "professional_quality": 5
+    },
+    "tone_gap_by_bucket": {
+      "casual": 0.25,
+      "empathetic": 0.25
+    },
+    "missing_facts_sample": {}
+  },
+  "failures": []
+}

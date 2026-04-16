@@ -1,0 +1,32 @@
+services:
+  ega:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: email-generation-assistant:latest
+    container_name: ega
+    ports:
+      - "8000:8000"
+    environment:
+      APP_ENV: ${APP_ENV:-development}
+      LLM_PROVIDER: ${LLM_PROVIDER:-anthropic}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      MODEL_PRIMARY: ${MODEL_PRIMARY:-claude-sonnet-4-6}
+      MODEL_FALLBACK: ${MODEL_FALLBACK:-claude-haiku-4-5-20251001}
+      DATABASE_URL: sqlite+aiosqlite:////app/data/app.db
+      CORS_ALLOW_ORIGINS: ${CORS_ALLOW_ORIGINS:-http://localhost:8000,http://127.0.0.1:8000}
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+    volumes:
+      - ega_data:/app/data
+      - ega_reports:/app/eval/reports
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:8000/healthz"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+volumes:
+  ega_data:
+  ega_reports:
